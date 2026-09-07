@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ma-craftax"
+version = "0.1.0"
+description = "Multi-Agent Craftax (Craftax-MA, Craftax-Coop): open-ended multi-agent RL environments in JAX"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+# Runtime imports of craftax/craftax_ma, craftax/craftax_coop and craftax/environment_base only.
+dependencies = [
+  "jax>=0.4.30",
+  "chex",
+  "flax",
+  "numpy",
+  "imageio",
+  "pillow",
+  "seaborn",
+  "jaxmarl",
+]
+
+[project.optional-dependencies]
+# Only needed by baselines/*.py.
+baselines = [
+  "distrax",
+  "optax",
+  "wandb",
+  "orbax-checkpoint",
+  "pygame",
+  "matplotlib",
+  "gymnax",
+]
+
+[project.urls]
+Upstream = "https://github.com/BaselOmari/MA-Craftax"
+
+[tool.hatch.build.targets.wheel]
+# Regular wheel: ship the `craftax` package (assets included).
+packages = ["craftax"]
+# Editable install: put BOTH the repo root (-> `import craftax.*`) and `craftax/`
+# (-> `import craftax_ma`, `craftax_coop`, `environment_base`, which the env modules
+# import as top-level names) on sys.path through the generated .pth file.
+dev-mode-dirs = [".", "craftax"]
